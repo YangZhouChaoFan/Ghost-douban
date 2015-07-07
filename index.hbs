@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{{meta_title}}</title>
+    <meta name="description" content="{{meta_description}}" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href='http://fonts.useso.com/css?family=Exo:100,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{{asset "css/style.css"}}" />
+    <script type="text/javascript" src="{{asset "js/jquery-1.11.1.min.js"}}"></script>
+    <script type="text/javascript" src="{{asset "js/handlebars-v2.0.0.js"}}"></script>
+    <script type="text/javascript">
+        window.posts = [];
+        window.tags = [];
+        window.authors = [];
+        {{#foreach posts}}
+
+            window.posts[{{@index}}] = {};
+            window.posts[{{@index}}].title = "{{title words="20"}}";
+            window.posts[{{@index}}].date = "{{date format="YYYY-MM-DD"}}";
+            window.posts[{{@index}}].author = '{{author}}';
+            window.posts[{{@index}}].tags = '{{tags}}';
+            window.posts[{{@index}}].excerpt = '{{excerpt characters="100"}}';
+            window.posts[{{@index}}].content = '{{content words="0"}}';
+            window.posts[{{@index}}].url = {{url}};
+
+            var tagTemp = '{{tags separator="|"}}';
+            tagTemp = tagTemp.split("|");
+            for(var i = 0; i < tagTemp.length; i++){
+                if(window.tags.indexOf(tagTemp[i]) == -1){
+                    window.tags = window.tags.concat(tagTemp); 
+                }
+            }
+
+            var authorTemp = '{{author}}';
+            if(window.authors.indexOf(authorTemp) == -1){
+                window.authors.push(authorTemp);
+            }
+
+            /*window.authors = [];
+            window.authorNames = [];
+            if(window.authorNames.indexOf("{{author.name}}") == -1){
+                window.authorNames.push("{{author.name}}");
+                var author = {};
+                author.name = "{{author.name}}";
+                author.url = "{{author.website}}";
+                author.src = "{{author.image}}";
+                window.authors.push(author);
+            }*/
+
+        {{/foreach}}
+    </script>
+</head>
+<body>
+    <div class="main">
+        
+        <div class="sideBar">
+            <div class="sideBarInner">
+                <div class="sideBarHd">
+                    <h2 class="sideBarTitle" >全部博客</h2>
+                    <form class="sideSearchForm" method="GET" action="">
+                        <div class="sideSearchInner">
+                            <input class="blogSideSearch" type="text" placeholder="搜索博客">
+                            <input class="blogSideSearchBtn" type="submit" value="" title="搜索">
+                        </div>
+                    </form>
+                </div>
+                <div class="sideBarMain">
+                    <div class="sideBarContent">
+                        <div class="tagOverView">
+                            <img src="{{asset "images/demo.png"}}">
+                        </div>
+                        <div class="tagOverViewList">
+                            <ul></ul>
+                            <br>
+                            <div class="overViewInfo"></div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="tagsUl"></ul>
+                <h3 class="staffHd">博客成员：</h3>
+                <ul class="authorsUl"></ul>
+
+            </div>
+            <div class="sideBarCtrl" onclick="barControl()">
+                <div class="sideBarCtrlBtn close" title="收起"></div>
+            </div>
+        </div>
+        <div class="menuBar">
+            <ul>
+                <li><a href="http://love.coolmore.me" target="_blank">love纪念</a></li>
+                <li><a href="http://yanglei.coolmore.me" target="_blank">web小游戏</a></li>
+                <li><a href="./ghost" target="_blank">管理</a></li>
+            </ul>
+        </div>
+        <div class="mainBackground"></div>
+        <div class="blogLogo">
+            {{#if @blog.logo}}
+                <a href="javascript: void(0)" onclick="musicPlayer()" title="前往 {{@blog.title}} 的主页">
+                    <img src="{{@blog.logo}}" alt="{{@blog.logo}}" width="80" class="blogLogoImg">
+                </a>
+            {{/if}}
+           <!--  <a href="/" title="博客Blog"></a> -->
+        </div>
+        <div class="blogShow">
+            <iframe id="musicPlayer" src="http://douban.fm/partner/baidu/doubanradio" frameborder="0" width="100%" height="100%"></iframe>
+            <section class="postExcerpt">
+                <!-- <p><h3>{{@blog.description}}</h3></p> -->
+            </section>
+        </div>
+        <div class="blogList">
+            <div class="blogListMain">
+                <ul class="blogListContent">
+                {{#foreach posts}}
+                    <li title="{{{title}}}" onclick="findBlogView(this, {{@index}})">
+                        <a><span>{{{title}}}</span></a>
+                    </li>
+                {{/foreach}}
+                </ul>
+                <div class="listFoot"></div>
+            </div>
+        </div>
+        <div class="foot">
+                <section class="copyright">豆瓣风博客 © 2014 • All rights reserved.</section>
+                <section class="poweredby">
+                    本博客基于 <a class="icon-ghost" href="http://ghost.org">Ghost</a>
+                    <span style='margin-left: 10px;'>
+                        <script type="text/javascript">
+                            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                            document.write(unescape("%3Cspan id='cnzz_stat_icon_1253581547'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253581547%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+                        </script>
+                    </span>
+                </section>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{asset "js/index.js"}}"></script>
+</body>
+</html>
